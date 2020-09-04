@@ -26,7 +26,7 @@ Please implement the stories below, including a few tests for the back-end, in o
 - Back-end: GRPC, using Kotlin, Go, or Java. 
 - Front-end: GRPC, React. 
 
-If you use dependencies, please add the associate containers with the project.
+If you use any dependencies, please add the associate containers to the project.
 
 This repo will be connected to Heroku so that your app can be deployed and inspected functionally. Please let us know what implementation languages you're going to use so we can set it up for you.
 
