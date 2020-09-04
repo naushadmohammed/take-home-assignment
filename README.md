@@ -1,6 +1,6 @@
 # Take Home Assignment 
 
-This assignment tests Kotlin/Java and React.
+This assignment tests Back-end and Front-end development.
 
 ## Introduction
 
@@ -23,8 +23,10 @@ There are 2 parts to the assignment:
 
 Please implement the stories below, including a few tests for the back-end, in one of the following languages: 
 
-- Back-end: Kotlin, Go, or Java. 
-- Front-end: React (Angular is also OK). 
+- Back-end: GRPC, using Kotlin, Go, or Java. 
+- Front-end: GRPC, React. 
+
+If you use dependencies, please add the associate containers with the project.
 
 This repo will be connected to Heroku so that your app can be deployed and inspected functionally. Please let us know what implementation languages you're going to use so we can set it up for you.
 
