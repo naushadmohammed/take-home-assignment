@@ -23,7 +23,7 @@ There are 2 parts to the assignment:
 
 Please implement the stories below, including a few tests for the back-end, in one of the following languages: 
 
-- Back-end: GRPC, using Kotlin, Go, or Java. 
+- Back-end: GRPC, using Kotlin, Go. 
 - Front-end: GRPC, React. 
 
 If you use any dependencies, please add the associate containers to the project.
