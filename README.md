@@ -16,7 +16,7 @@ What, besides the obvious, do you believe is necessary? Please code it that way 
 
 There are 2 parts to the assignment:
 
-1) Some [code](#Coding) to be writting
+1) Some [code](#Coding) to be written.
 2) Some [questions](#Questions) about your code.
 
 ## Tech choices
@@ -95,7 +95,7 @@ price of fuel is 0.66 €/L, what is the ranking of cars according to their tota
 
 Based on these stories, please do as follows:
 
-* Describe the architecture you will use and the motivation for its choice? (max 500 characters)
+* Describe the architecture you will use and include a motivation of your choices. (max 500 characters)
 
 * You have a team of 3 developers. How would you tackle working together on the stories?
 
