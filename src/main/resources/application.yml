@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: car-dealer
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=ORACLE;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: naushad
+    password: naushad
+
+server:
+  port: 8080
+  servlet:
+    contextPath: /
+  address: 127.0.0.1
+  tomcat:
+    accesslog:
+      enabled: true
+      buffered: false
+      prefix: access
+      suffix: .log
+      pattern: common
+
+logging:
+  level:
+    root: DEBUG
+    org.springframework: DEBUG
+    com.hackerrank.stocktrades: DEBUG
+
+management:
+  endpoints:
+    enabled-by-default: false
+    web:
+      base-path: /
+      path-mapping:
+        health: healthcheck.html
+      exposure:
+        include: health
+  endpoint:
+    health:
+      enabled: true
+  server:
+    port: 8080
+    address: 127.0.0.1
+
+

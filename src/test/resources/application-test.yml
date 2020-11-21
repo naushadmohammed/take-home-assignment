@@ -1,0 +1,80 @@
+spring:
+  application:
+    name: media-services
+server:
+  port: 9000
+  servlet:
+    contextPath: /animana
+  address: 127.0.0.1
+  tomcat:
+    accesslog:
+      enabled: true
+      directory: ${project.basedir}\logs
+      buffered: false
+      prefix: access
+      suffix: .log
+      pattern: common
+
+external:
+  api:
+    album:
+      name: iTunesAPI
+      url: https://itunes.apple.com/search
+    book:
+      name: googleBooksAPI
+      url: https://www.googleapis.com/books/v1/volumes
+
+logging:
+  level:
+    root: DEBUG
+    org.springframework: INFO
+    com.idexx.assignment.mediaservices: DEBUG
+
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 60000
+        readTimeout: 60000
+        loggerLevel: FULL
+  hystrix:
+    enabled: true
+  okhttp:
+    enabled: true
+
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: true
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000
+          strategy: SEMAPHORE
+
+management:
+  endpoints:
+    enabled-by-default: false
+    web:
+      base-path: /
+      path-mapping:
+        health: healthcheck.html
+      exposure:
+        include: health,hystrix.stream
+      cors:
+        allowed-origins: http://localhost:4200
+        allowed-methods: GET,POST
+  endpoint:
+    health:
+      enabled: true
+  server:
+    port: 9000
+    address: 127.0.0.1
+
+application:
+  configuration:
+    values:
+      albumLimit: 3
+      bookLimit: 3
