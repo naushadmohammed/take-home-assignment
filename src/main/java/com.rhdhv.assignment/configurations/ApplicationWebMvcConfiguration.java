@@ -1,4 +1,4 @@
-package com.hackerrank.stocktrades.configurations;
+package com.rhdhv.assignment.configurations;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

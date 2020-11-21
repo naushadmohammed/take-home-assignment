@@ -1,4 +1,4 @@
-package com.hackerrank.stocktrades.constants;
+package com.rhdhv.assignment.constants;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
