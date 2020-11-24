@@ -11,8 +11,9 @@ import lombok.Data;
 @ApiModel
 public class ApplicationCustomError {
 
-  @ApiModelProperty(notes = "HTTP status code.")
-  private final Integer status;
   @ApiModelProperty(notes = "Error message.")
   private final String message;
+  @ApiModelProperty(notes = "HTTP status code.")
+  private final Integer status;
+
 }
