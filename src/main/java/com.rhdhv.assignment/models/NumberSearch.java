@@ -17,7 +17,6 @@ public class NumberSearch extends Search implements Serializable {
 
   @JsonProperty(value = "type", required = true)
   @ApiModelProperty(example = "number", notes = "send number if the type of search is numeric")
-  @NotNull
   private String type;
 
   @JsonProperty(value = "value", required = true)

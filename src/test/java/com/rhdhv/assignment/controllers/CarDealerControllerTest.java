@@ -10,6 +10,9 @@ import com.rhdhv.assignment.models.Car;
 import com.rhdhv.assignment.models.NumberSearch;
 import com.rhdhv.assignment.models.NumberSearch.NumberComparison;
 import com.rhdhv.assignment.models.Search;
+import com.rhdhv.assignment.models.SearchRequest;
+import com.rhdhv.assignment.models.SortModel;
+import com.rhdhv.assignment.models.SortModel.SortType;
 import com.rhdhv.assignment.models.StringSearch;
 import com.rhdhv.assignment.models.StringSearch.StringComparison;
 import com.rhdhv.assignment.services.ICarDealerService;
@@ -50,7 +53,8 @@ public class CarDealerControllerTest {
         NumberSearch.builder().type("number").comparison(NumberComparison.eq).value(2000).build());
     mockMvc.perform(post("/cars/search")
         .contentType("application/json")
-        .content(objectMapper.writeValueAsString(map))).andExpect(status().isOk());
+        .content(objectMapper.writeValueAsString(SearchRequest.builder().search(map).build())))
+        .andExpect(status().isOk());
   }
 
   @Test
@@ -61,7 +65,8 @@ public class CarDealerControllerTest {
             .build());
     mockMvc.perform(post("/cars/search")
         .contentType("application/json")
-        .content(objectMapper.writeValueAsString(map))).andExpect(status().isOk());
+        .content(objectMapper.writeValueAsString(SearchRequest.builder().search(map).build())))
+        .andExpect(status().isOk());
   }
 
   @Test
@@ -70,9 +75,11 @@ public class CarDealerControllerTest {
     map.put("brand",
         StringSearch.builder().comparison(StringComparison.eq).value("Honda")
             .build());
+    SearchRequest sr = SearchRequest.builder().search(map).build();
+    String om = objectMapper.writeValueAsString(sr);
     mockMvc.perform(post("/cars/search")
         .contentType("application/json")
-        .content(objectMapper.writeValueAsString(map))).andExpect(status().isBadRequest());
+        .content(objectMapper.writeValueAsString(om))).andExpect(status().isBadRequest());
   }
 
   @Test
@@ -81,9 +88,11 @@ public class CarDealerControllerTest {
     map.put("brand",
         StringSearch.builder().type("string").comparison(StringComparison.eq)
             .build());
+    SearchRequest sr = SearchRequest.builder().search(map).build();
+    String om = objectMapper.writeValueAsString(sr);
     mockMvc.perform(post("/cars/search")
         .contentType("application/json")
-        .content(objectMapper.writeValueAsString(map))).andExpect(status().isBadRequest());
+        .content(objectMapper.writeValueAsString(om))).andExpect(status().isBadRequest());
   }
 
   @Test
@@ -92,9 +101,11 @@ public class CarDealerControllerTest {
     map.put("brand",
         StringSearch.builder().type("string").value("abc")
             .build());
+    SearchRequest sr = SearchRequest.builder().search(map).build();
+    String om = objectMapper.writeValueAsString(sr);
     mockMvc.perform(post("/cars/search")
         .contentType("application/json")
-        .content(objectMapper.writeValueAsString(map))).andExpect(status().isBadRequest());
+        .content(objectMapper.writeValueAsString(om))).andExpect(status().isBadRequest());
   }
 
   @Test
@@ -105,13 +116,38 @@ public class CarDealerControllerTest {
             .build());
     map.put("yearOfRelease",
         NumberSearch.builder().type("number").comparison(NumberComparison.eq).value(2000).build());
+
     mockMvc.perform(post("/cars/search")
         .contentType("application/json")
-        .content(objectMapper.writeValueAsString(map))).andExpect(status().isOk());
+        .content(objectMapper.writeValueAsString(SearchRequest.builder().search(map).build())))
+        .andExpect(status().isOk());
   }
 
   @Test
-  public void testWhenWrongAPICallThen200OK() throws Exception {
+  public void testWhenSearchCarsSortOnly200OK() throws Exception {
+    SortModel sort = SortModel.builder().field("brand").sortType(SortType.asc).build();
+    mockMvc.perform(post("/cars/search")
+        .contentType("application/json")
+        .content(objectMapper.writeValueAsString(SearchRequest.builder().sort(sort).build())))
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  public void testWhenSearchCarsByMakeAndSortThen200OK() throws Exception {
+    Map<String, Search> map = new HashMap<>();
+    map.put("brand",
+        StringSearch.builder().type("string").comparison(StringComparison.eq).value("Honda")
+            .build());
+    SortModel sort = SortModel.builder().field("brand").sortType(SortType.asc).build();
+    mockMvc.perform(post("/cars/search")
+        .contentType("application/json")
+        .content(objectMapper
+            .writeValueAsString(SearchRequest.builder().search(map).sort(sort).build())))
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  public void testWhenWrongAPICallThen404NotFound() throws Exception {
     mockMvc.perform(get("/cars/api?brand=Honda&yearOfRelease=2000"))
         .andExpect(status().isNotFound());
   }

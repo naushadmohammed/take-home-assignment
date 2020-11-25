@@ -3,6 +3,7 @@ package com.rhdhv.assignment.controllers;
 import com.rhdhv.assignment.exceptions.error.ApplicationCustomError;
 import com.rhdhv.assignment.models.Car;
 import com.rhdhv.assignment.models.Search;
+import com.rhdhv.assignment.models.SearchRequest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -46,7 +47,7 @@ public interface ICarDealerController {
   /**
    * Retrieve {@link List} of {@link Car} for the given search criteria.
    *
-   * @param search {@link Map<String, Search>} representing the search criteria.
+   * @param search {@link SearchRequest} representing the search criteria.
    * @return {@link ResponseEntity} with wrapped status code and {@link List} of {@link Car}
    */
   @ApiOperation(value = "Searches Stock for the given input search criteria")
@@ -62,6 +63,6 @@ public interface ICarDealerController {
       @ApiResponse(code = 500,
           message = "An unexpected error has occurred. The error has been logged and is being investigated")})
   ResponseEntity<List<Car>> getCars(
-      @Valid @RequestBody(required = false) Map<String, Search> search);
+      @Valid @RequestBody(required = false) SearchRequest search);
 }
 

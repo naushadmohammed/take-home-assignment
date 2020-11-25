@@ -17,7 +17,6 @@ public class StringSearch extends Search implements Serializable {
 
   @JsonProperty(value = "type", required = true)
   @ApiModelProperty(example = "string", notes = "send string if the type of search is text")
-  @NotNull
   private String type;
 
   @JsonProperty(value = "value", required = true)

@@ -8,6 +8,9 @@ import com.rhdhv.assignment.models.Car;
 import com.rhdhv.assignment.models.NumberSearch;
 import com.rhdhv.assignment.models.NumberSearch.NumberComparison;
 import com.rhdhv.assignment.models.Search;
+import com.rhdhv.assignment.models.SearchRequest;
+import com.rhdhv.assignment.models.SortModel;
+import com.rhdhv.assignment.models.SortModel.SortType;
 import com.rhdhv.assignment.models.StringSearch;
 import com.rhdhv.assignment.models.StringSearch.StringComparison;
 import java.util.HashMap;
@@ -52,18 +55,15 @@ public class CarDealerServiceIntegrationTest {
 
   @Test
   public void testGetCars() {
-    Map<String, Search> map = new HashMap<>();
-
-    List<Car> cars = carDealerService.get(map);
+    SearchRequest searchRequest = SearchRequest.builder().build();
+    List<Car> cars = carDealerService.get(searchRequest);
     assertNotNull(cars);
     assertEquals(7, cars.size());
-
     cars.forEach(car -> {
       assertNotNull(car);
       assertNotNull(car.getBrand());
       assertNotNull(car.getModel());
     });
-
   }
 
   @Test
@@ -72,7 +72,7 @@ public class CarDealerServiceIntegrationTest {
     map.put("brand",
         StringSearch.builder().type("string").comparison(StringComparison.eq).value("Honda")
             .build());
-    List<Car> cars = carDealerService.get(map);
+    List<Car> cars = carDealerService.get(SearchRequest.builder().search(map).build());
     cars.forEach(car -> {
       assertNotNull(car);
       assertNotNull(car.getBrand());
@@ -88,7 +88,7 @@ public class CarDealerServiceIntegrationTest {
     map.put("brand",
         StringSearch.builder().type("string").comparison(StringComparison.sw).value("H")
             .build());
-    List<Car> cars = carDealerService.get(map);
+    List<Car> cars = carDealerService.get(SearchRequest.builder().search(map).build());
     assertNotNull(cars);
     assertEquals(4, cars.size());
     cars.forEach(car -> {
@@ -103,7 +103,7 @@ public class CarDealerServiceIntegrationTest {
     map.put("brand",
         StringSearch.builder().type("string").comparison(StringComparison.ne).value("Audi")
             .build());
-    List<Car> cars = carDealerService.get(map);
+    List<Car> cars = carDealerService.get(SearchRequest.builder().search(map).build());
     assertNotNull(cars);
     assertEquals(4, cars.size());
     cars.forEach(car -> {
@@ -119,7 +119,7 @@ public class CarDealerServiceIntegrationTest {
     map.put("brand",
         StringSearch.builder().type("string").comparison(StringComparison.ew).value("i")
             .build());
-    List<Car> cars = carDealerService.get(map);
+    List<Car> cars = carDealerService.get(SearchRequest.builder().search(map).build());
     assertNotNull(cars);
     assertEquals(4, cars.size());
     cars.forEach(car -> {
@@ -135,7 +135,7 @@ public class CarDealerServiceIntegrationTest {
     map.put("brand",
         StringSearch.builder().type("string").comparison(StringComparison.co).value("ud")
             .build());
-    List<Car> cars = carDealerService.get(map);
+    List<Car> cars = carDealerService.get(SearchRequest.builder().search(map).build());
     assertNotNull(cars);
     assertEquals(3, cars.size());
     cars.forEach(car -> {
@@ -153,7 +153,7 @@ public class CarDealerServiceIntegrationTest {
     map.put("yearOfRelease",
         NumberSearch.builder().type("number").comparison(NumberComparison.eq).value(2000)
             .build());
-    List<Car> cars = carDealerService.get(map);
+    List<Car> cars = carDealerService.get(SearchRequest.builder().search(map).build());
     assertNotNull(cars);
     assertEquals(0, cars.size());
 
@@ -165,7 +165,7 @@ public class CarDealerServiceIntegrationTest {
     map.put("yearOfRelease",
         NumberSearch.builder().type("number").comparison(NumberComparison.eq).value(2020)
             .build());
-    List<Car> cars = carDealerService.get(map);
+    List<Car> cars = carDealerService.get(SearchRequest.builder().search(map).build());
     assertNotNull(cars);
     assertEquals(3, cars.size());
     cars.forEach(car -> {
@@ -181,7 +181,7 @@ public class CarDealerServiceIntegrationTest {
     map.put("yearOfRelease",
         NumberSearch.builder().type("number").comparison(NumberComparison.gt).value(2019)
             .build());
-    List<Car> cars = carDealerService.get(map);
+    List<Car> cars = carDealerService.get(SearchRequest.builder().search(map).build());
     assertNotNull(cars);
     assertEquals(3, cars.size());
     cars.forEach(car -> {
@@ -197,7 +197,7 @@ public class CarDealerServiceIntegrationTest {
     map.put("yearOfRelease",
         NumberSearch.builder().type("number").comparison(NumberComparison.ge).value(2019)
             .build());
-    List<Car> cars = carDealerService.get(map);
+    List<Car> cars = carDealerService.get(SearchRequest.builder().search(map).build());
     assertNotNull(cars);
     assertEquals(6, cars.size());
     cars.forEach(car -> {
@@ -211,7 +211,7 @@ public class CarDealerServiceIntegrationTest {
     map.put("yearOfRelease",
         NumberSearch.builder().type("number").comparison(NumberComparison.lt).value(2019)
             .build());
-    List<Car> cars = carDealerService.get(map);
+    List<Car> cars = carDealerService.get(SearchRequest.builder().search(map).build());
     assertNotNull(cars);
     assertEquals(1, cars.size());
     cars.forEach(car -> {
@@ -225,7 +225,7 @@ public class CarDealerServiceIntegrationTest {
     map.put("yearOfRelease",
         NumberSearch.builder().type("number").comparison(NumberComparison.le).value(2019)
             .build());
-    List<Car> cars = carDealerService.get(map);
+    List<Car> cars = carDealerService.get(SearchRequest.builder().search(map).build());
     assertNotNull(cars);
     assertEquals(4, cars.size());
     cars.forEach(car -> {
@@ -240,7 +240,7 @@ public class CarDealerServiceIntegrationTest {
         NumberSearch.builder().type("number").comparison(NumberComparison.bt).value(2019)
             .toValue(2020)
             .build());
-    List<Car> cars = carDealerService.get(map);
+    List<Car> cars = carDealerService.get(SearchRequest.builder().search(map).build());
     assertNotNull(cars);
     assertEquals(6, cars.size());
     cars.forEach(car -> {
@@ -254,11 +254,41 @@ public class CarDealerServiceIntegrationTest {
     map.put("yearOfRelease",
         NumberSearch.builder().type("number").comparison(NumberComparison.ne).value(2019)
             .build());
-    List<Car> cars = carDealerService.get(map);
+    List<Car> cars = carDealerService.get(SearchRequest.builder().search(map).build());
     assertNotNull(cars);
     assertEquals(4, cars.size());
     cars.forEach(car -> {
       assertNotNull(car);
     });
+  }
+
+  @Test
+  public void testSearchCarsSortByBrandAsc() {
+    Map<String, Search> map = new HashMap<>();
+    SortModel sort = SortModel.builder().field("brand").sortType(SortType.asc).build();
+    map.put("yearOfRelease",
+        NumberSearch.builder().type("number").comparison(NumberComparison.eq).value(2019)
+            .build());
+    List<Car> cars = carDealerService.get(SearchRequest.builder().search(map).sort(sort).build());
+    assertNotNull(cars);
+    assertEquals(3, cars.size());
+    assertEquals("Audi",cars.get(0).getBrand());
+    assertEquals("Honda",cars.get(1).getBrand());
+    assertEquals("Hyundai",cars.get(2).getBrand());
+  }
+
+  @Test
+  public void testSearchCarsSortByBrandDesc() {
+    Map<String, Search> map = new HashMap<>();
+    SortModel sort = SortModel.builder().field("brand").sortType(SortType.desc).build();
+    map.put("yearOfRelease",
+        NumberSearch.builder().type("number").comparison(NumberComparison.eq).value(2019)
+            .build());
+    List<Car> cars = carDealerService.get(SearchRequest.builder().search(map).sort(sort).build());
+    assertNotNull(cars);
+    assertEquals(3, cars.size());
+    assertEquals("Hyundai",cars.get(0).getBrand());
+    assertEquals("Honda",cars.get(1).getBrand());
+    assertEquals("Audi",cars.get(2).getBrand());
   }
 }

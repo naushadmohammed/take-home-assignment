@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 /**
  * Utility class with various helper methods
  */
-public class Utils {
+public class QueryUtils {
 
   /**
    * Static method to provide addition of criteria based on various comparison for Numeric data

@@ -2,6 +2,7 @@ package com.rhdhv.assignment.services;
 
 import com.rhdhv.assignment.models.Car;
 import com.rhdhv.assignment.models.Search;
+import com.rhdhv.assignment.models.SearchRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -24,5 +25,5 @@ public interface ICarDealerService {
    * @param search {@link Map<String,Search>} search
    * @return {@link List<Car>} Variants of car based on search string
    */
-  List<Car> get(Map<String, Search> search);
+  List<Car> get(SearchRequest search);
 }

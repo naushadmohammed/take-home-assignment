@@ -1,19 +1,13 @@
 package com.rhdhv.assignment.services.impl;
 
-import static com.rhdhv.assignment.utils.Utils.addNumberCriteria;
-import static com.rhdhv.assignment.utils.Utils.addStringCriteria;
-
 import com.rhdhv.assignment.models.Car;
-import com.rhdhv.assignment.models.NumberSearch;
-import com.rhdhv.assignment.models.Search;
-import com.rhdhv.assignment.models.StringSearch;
+import com.rhdhv.assignment.models.SearchRequest;
 import com.rhdhv.assignment.repositories.CarRepository;
 import com.rhdhv.assignment.services.ICarDealerService;
-import java.util.ArrayList;
+import com.rhdhv.assignment.utils.QueryBuilder;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
@@ -38,25 +32,11 @@ public class CarDealerService implements ICarDealerService {
    * {@inheritDoc}
    */
   @Override
-  public List<Car> get(Map<String, Search> search) {
-    final Query query = new Query();
-    final List<Criteria> criteria = new ArrayList<>();
-    search.forEach((k, v) -> addCriteria(k, v, criteria));
-
-    if (!criteria.isEmpty()) {
-      query
-          .addCriteria(new Criteria().andOperator(criteria.toArray(new Criteria[criteria.size()])));
-    }
+  public List<Car> get(SearchRequest search) {
+    Query query = new QueryBuilder().withSearch(Optional.ofNullable(search.getSearch()))
+        .order(Optional.ofNullable(search.getSort())).getQuery();
     return carRepository.find(query);
   }
 
-  private void addCriteria(String field, Search search, List<Criteria> criteria) {
-    if (search instanceof StringSearch) {
-      addStringCriteria(field, (StringSearch) search, criteria);
-    }
-    if (search instanceof NumberSearch) {
-      addNumberCriteria(field, (NumberSearch) search, criteria);
-    }
-  }
 
 }
