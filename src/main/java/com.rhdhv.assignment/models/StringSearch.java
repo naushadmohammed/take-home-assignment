@@ -8,6 +8,11 @@ import javax.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 
+/**
+ * Model to store parameters to be used while searching string fields. Different values can be
+ * passed for comparison. for ex. comparison : <b>eq</b> will result in a comparison with equalto
+ * operator.
+ */
 @Data
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)

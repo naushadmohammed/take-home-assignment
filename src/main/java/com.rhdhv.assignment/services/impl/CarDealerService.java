@@ -1,13 +1,18 @@
 package com.rhdhv.assignment.services.impl;
 
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.newAggregation;
+
 import com.rhdhv.assignment.models.Car;
+import com.rhdhv.assignment.models.DealRequest;
 import com.rhdhv.assignment.models.SearchRequest;
 import com.rhdhv.assignment.repositories.CarRepository;
 import com.rhdhv.assignment.services.ICarDealerService;
+import com.rhdhv.assignment.utils.AggregationOperationBuilder;
 import com.rhdhv.assignment.utils.QueryBuilder;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
@@ -38,5 +43,14 @@ public class CarDealerService implements ICarDealerService {
     return carRepository.find(query);
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public List<Car> getCarsForDeal(DealRequest dealRequest) {
+    List<AggregationOperation> operations = new AggregationOperationBuilder()
+        .withDealRequest(dealRequest).getOperations();
+    return carRepository.getCarsForDeal(newAggregation(operations));
+  }
 
 }

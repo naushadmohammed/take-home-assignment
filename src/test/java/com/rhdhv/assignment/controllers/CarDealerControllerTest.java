@@ -1,5 +1,10 @@
 package com.rhdhv.assignment.controllers;
 
+import static org.hamcrest.Matchers.anyOf;
+import static org.hamcrest.Matchers.containsString;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -7,6 +12,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rhdhv.assignment.controllers.impl.CarDealerController;
 import com.rhdhv.assignment.models.Car;
+import com.rhdhv.assignment.models.DealRequest;
+import com.rhdhv.assignment.models.LowAnnualMaintenance;
 import com.rhdhv.assignment.models.NumberSearch;
 import com.rhdhv.assignment.models.NumberSearch.NumberComparison;
 import com.rhdhv.assignment.models.Search;
@@ -16,7 +23,9 @@ import com.rhdhv.assignment.models.SortModel.SortType;
 import com.rhdhv.assignment.models.StringSearch;
 import com.rhdhv.assignment.models.StringSearch.StringComparison;
 import com.rhdhv.assignment.services.ICarDealerService;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -67,6 +76,29 @@ public class CarDealerControllerTest {
         .contentType("application/json")
         .content(objectMapper.writeValueAsString(SearchRequest.builder().search(map).build())))
         .andExpect(status().isOk());
+  }
+
+  @Test
+  public void testWhenDealrequestThenReturnCarsWithFewParameters() throws Exception {
+    Map<String, Search> map = new HashMap<>();
+    map.put("yearOfRelease",
+        NumberSearch.builder().type("number").comparison(NumberComparison.eq).value(2019)
+            .build());
+    DealRequest request = DealRequest.builder()
+        .searchRequest(SearchRequest.builder().search(map).build()).deal(
+            LowAnnualMaintenance.builder().dealType("lowAnnualMaintenance").fuelRate(10.0f)
+                .travelDistance(250).build()).build();
+    List<Car> cars = new ArrayList<>();
+    cars.add(Car.builder().brand("Honda").model("Civic").maintenanceCost(100).fuelConsumption(1)
+        .price(10000).build());
+    String carValue = objectMapper.writeValueAsString(cars);
+    when(carDealerService.getCarsForDeal(request)).thenReturn(cars);
+    String result = mockMvc.perform(post("/cars/deal")
+        .contentType("application/json")
+        .content(objectMapper.writeValueAsString(request)))
+        .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+    assertThat(result, anyOf(containsString("maintenanceCost")));
+    assertFalse(result.contains("brand"));
   }
 
   @Test
@@ -198,8 +230,8 @@ public class CarDealerControllerTest {
     Car expectedRecord = Car.builder().brand("Honda").model("Cr-V").version("c").yearOfRelease(2019)
         .price(1234).fuelConsumption(0).maintenanceCost(1).build();
     mockMvc.perform(post("/cars/search")
-        .contentType("application/json")
-    )
+        .contentType("application/json"))
         .andExpect(status().isOk());
   }
+
 }

@@ -1,12 +1,13 @@
 package com.rhdhv.assignment.controllers.impl;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.rhdhv.assignment.controllers.ICarDealerController;
 import com.rhdhv.assignment.models.Car;
-import com.rhdhv.assignment.models.Search;
+import com.rhdhv.assignment.models.DealRequest;
+import com.rhdhv.assignment.models.GroupView;
 import com.rhdhv.assignment.models.SearchRequest;
 import com.rhdhv.assignment.services.ICarDealerService;
 import java.util.List;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -53,7 +54,19 @@ public class CarDealerController implements ICarDealerController {
   @PostMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
   public ResponseEntity<List<Car>> getCars(SearchRequest search) {
-    System.out.println(search);
     return new ResponseEntity<>(carDealerService.get(search), HttpStatus.OK);
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * @return {@link ResponseEntity}
+   */
+  @Override
+  @PostMapping(value = "/deal", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.OK)
+  @JsonView(value = {GroupView.DealView.class})
+  public ResponseEntity<List<Car>> getCarsForDeal(DealRequest dealRequest) {
+    return new ResponseEntity<>(carDealerService.getCarsForDeal(dealRequest), HttpStatus.OK);
   }
 }

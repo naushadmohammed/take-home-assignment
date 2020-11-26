@@ -5,6 +5,8 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 
 import com.rhdhv.assignment.models.Car;
+import com.rhdhv.assignment.models.DealRequest;
+import com.rhdhv.assignment.models.LowAnnualMaintenance;
 import com.rhdhv.assignment.models.NumberSearch;
 import com.rhdhv.assignment.models.NumberSearch.NumberComparison;
 import com.rhdhv.assignment.models.Search;
@@ -272,9 +274,9 @@ public class CarDealerServiceIntegrationTest {
     List<Car> cars = carDealerService.get(SearchRequest.builder().search(map).sort(sort).build());
     assertNotNull(cars);
     assertEquals(3, cars.size());
-    assertEquals("Audi",cars.get(0).getBrand());
-    assertEquals("Honda",cars.get(1).getBrand());
-    assertEquals("Hyundai",cars.get(2).getBrand());
+    assertEquals("Audi", cars.get(0).getBrand());
+    assertEquals("Honda", cars.get(1).getBrand());
+    assertEquals("Hyundai", cars.get(2).getBrand());
   }
 
   @Test
@@ -287,8 +289,27 @@ public class CarDealerServiceIntegrationTest {
     List<Car> cars = carDealerService.get(SearchRequest.builder().search(map).sort(sort).build());
     assertNotNull(cars);
     assertEquals(3, cars.size());
-    assertEquals("Hyundai",cars.get(0).getBrand());
-    assertEquals("Honda",cars.get(1).getBrand());
-    assertEquals("Audi",cars.get(2).getBrand());
+    assertEquals("Hyundai", cars.get(0).getBrand());
+    assertEquals("Honda", cars.get(1).getBrand());
+    assertEquals("Audi", cars.get(2).getBrand());
+  }
+
+
+  @Test
+  public void testGetDealByParameters() {
+    Map<String, Search> map = new HashMap<>();
+    map.put("yearOfRelease",
+        NumberSearch.builder().type("number").comparison(NumberComparison.eq).value(2019)
+            .build());
+    DealRequest request = DealRequest.builder()
+        .searchRequest(SearchRequest.builder().search(map).build()).deal(
+            LowAnnualMaintenance.builder().dealType("lowAnnualMaintenance").fuelRate(10.0f)
+                .travelDistance(250).build()).build();
+    List<Car> cars = carDealerService.getCarsForDeal(request);
+    assertNotNull(cars);
+    assertEquals(3, cars.size());
+    assertEquals(10, cars.get(0).getFuelConsumption());
+    assertEquals(1000, cars.get(0).getMaintenanceCost());
+    assertEquals(20000, cars.get(0).getPrice());
   }
 }

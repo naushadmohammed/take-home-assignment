@@ -14,7 +14,8 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @Configuration
 public class MongoDBConfig {
 
-  //Added to create Cars so that it would be easier for creating searches and testing. Can be removed later and moved to test.
+  //Added to create Cars so that it would be easier for creating searches and testing.
+  // Can be removed later and moved to test folder.
   @Bean
   CommandLineRunner commandLineRunner(CarRepository carRepository) {
     return strings -> {

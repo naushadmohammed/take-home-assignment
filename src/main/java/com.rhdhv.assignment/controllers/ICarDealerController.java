@@ -2,6 +2,7 @@ package com.rhdhv.assignment.controllers;
 
 import com.rhdhv.assignment.exceptions.error.ApplicationCustomError;
 import com.rhdhv.assignment.models.Car;
+import com.rhdhv.assignment.models.DealRequest;
 import com.rhdhv.assignment.models.Search;
 import com.rhdhv.assignment.models.SearchRequest;
 import io.swagger.annotations.Api;
@@ -64,5 +65,26 @@ public interface ICarDealerController {
           message = "An unexpected error has occurred. The error has been logged and is being investigated")})
   ResponseEntity<List<Car>> getCars(
       @Valid @RequestBody(required = false) SearchRequest search);
+
+  /**
+   * Retrieve {@link List} of {@link Car} for the given dealrequest.
+   *
+   * @param dealRequest {@link DealRequest} representing the deal requesta.
+   * @return {@link ResponseEntity} with wrapped status code and {@link List} of {@link Car}
+   */
+  @ApiOperation(value = "Retrieves car for the given recommendation deal")
+  @ApiResponses(value = {
+      @ApiResponse(code = 200, message = "Retrieval was successful for the given deal.",
+          examples = @Example(
+              value = @ExampleProperty(mediaType = MediaType.APPLICATION_JSON_VALUE, value = "")),
+          response = Car.class, responseContainer = "List"),
+      @ApiResponse(code = 400, message = "Invalid or malformed request body.",
+          examples = @Example(
+              value = @ExampleProperty(mediaType = MediaType.APPLICATION_JSON_VALUE, value = "")),
+          response = ApplicationCustomError.class),
+      @ApiResponse(code = 500,
+          message = "An unexpected error has occurred. The error has been logged and is being investigated")})
+  ResponseEntity<List<Car>> getCarsForDeal(
+      @Valid @RequestBody DealRequest dealRequest);
 }
 

@@ -1,13 +1,7 @@
 package com.rhdhv.assignment.utils;
 
-import static com.rhdhv.assignment.utils.QueryUtils.addNumberCriteria;
-import static com.rhdhv.assignment.utils.QueryUtils.addStringCriteria;
-
-import com.rhdhv.assignment.models.NumberSearch;
 import com.rhdhv.assignment.models.Search;
 import com.rhdhv.assignment.models.SortModel;
-import com.rhdhv.assignment.models.StringSearch;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -16,6 +10,10 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
+/**
+ * Builder class to assist in building Query which will be used by mongo to create create query
+ * searches
+ */
 public class QueryBuilder {
 
   private final Query query;
@@ -29,11 +27,7 @@ public class QueryBuilder {
   }
 
   public QueryBuilder withSearch(Optional<Map<String, Search>> search) {
-    final List<Criteria> criteria = new ArrayList<>();
-    if (search.isPresent()) {
-      search.get().forEach((k, v) -> addCriteria(k, v, criteria));
-    }
-
+    final List<Criteria> criteria = new CriteriaBuilder().createCritera(search);
     if (!criteria.isEmpty()) {
       query
           .addCriteria(new Criteria().andOperator(criteria.toArray(new Criteria[criteria.size()])));
@@ -57,12 +51,4 @@ public class QueryBuilder {
 
   }
 
-  private void addCriteria(String field, Search search, List<Criteria> criteria) {
-    if (search instanceof StringSearch) {
-      addStringCriteria(field, (StringSearch) search, criteria);
-    }
-    if (search instanceof NumberSearch) {
-      addNumberCriteria(field, (NumberSearch) search, criteria);
-    }
-  }
 }

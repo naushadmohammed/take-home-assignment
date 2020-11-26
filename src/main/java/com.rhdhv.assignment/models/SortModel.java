@@ -6,6 +6,9 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
 
+/**
+ * SortModel to be used for sorting using a parameter
+ */
 @Data
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
