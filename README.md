@@ -1,102 +1,106 @@
-# Take Home Assignment 
+# Car Dealer Service
 
-This assignment tests Back-end and Front-end development.
+Car Dealer API allows the dealer/user to add new cars, and search the inventory based on several parameters and different criterias.
+The API also allows user to get a particular recommendation based on a pre-defined deal, which is configured in the application.
 
-## Introduction
+## Getting Started
+Below instructions will get you a copy of up and running project on your local machine for development and testing purposes.
 
-Thank you for taking time to do this home assignment! 
-
-The assignment asks you to do some simple things. The obvious implementation 
-should be easy for you. What we're interested in seeing is what you
-know from experience to be not so obvious.
-
-Imagine this has to run in production.
-
-What, besides the obvious, do you believe is necessary? Please code it that way :-)
-
-There are 2 parts to the assignment:
-
-1) Some [code](#Coding) to be written.
-2) Some [questions](#Questions) about your code.
-
-## Tech choices
-
-Please implement the stories below, including a few tests for the back-end, in one of the following languages: 
-
-- Back-end: gRPC, using Kotlin, Go. 
-- Front-end: gRPC, React. 
-
-If you use any dependencies, please add the associate containers to the project.
-
-This repo will be connected to Heroku so that your app can be deployed and inspected functionally. Please let us know what implementation languages you're going to use so we can set it up for you.
-
-You are free to use the CIS Automotive API (https://api.autodealerdata.com/docs).
-
-## UI
-
-You are free to design your own UI. 
-
-Or you can take some clues from a UI we've uploaded to Zeplin. The UI is in the public domain
-and we've uploaded it to Zeplin for your convenience. Let us know if you want to use it.
-
-The design: https://www.xdguru.com/cars-classified-website-xd-template/
-
-Zeplin: https://zpl.io/2j6Q1lx
+### Technologies Used
+* [Spring Boot](https://spring.io/projects/spring-boot): The Spring Boot Framework is an application framework and inversion of control container for the Java platform. The framework's core features can be used by any Java application, but there are extensions for building web applications on top of the Java EE platform.
+* [Java 8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) - Java
+* [MongoDB](https://www.mongodb.com/) - A Document based distributed database. for this project, we are using embedded mongodb, so we don't need to install anything. 
+* [Swagger](https://swagger.io/docs/) - Interactive API documentation
+* [Lombok](https://projectlombok.org/) - Java library that automatically plugs into your editor and build tools
+* [Maven](https://maven.apache.org/) - Maven 3.6.1 
 
 
+## Architecture Approach
+Backend - Spring Boot : 
+Spring Boot makes it easy to create stand-alone, production-grade Spring based Applications that you can "just run".
+Embedded Tomcat provides a quick way to run our applications on any servers without prior setup or installation of any webservers.
+Sring boot makes it easier to scale up the application vertically on any given cloud platforms.
 
-## Intermediate Review
+Database - Mongo DB : 
+MongoDB is a general purpose, document-based, distributed database built for the cloud era.
+Considering the load on Car dealer application, search feature and complex suggestion based on various parameters would be used most. 
+Keeping this in mind Mongo DB stands out the best as it provides a faster reading capability compared to various databases, 
+and can also handle complex query which can be run directly on a database.
+ 
 
-We offer you the option to ask one of us to give you intermediate feedback on your code before you hand your assignment in.
+## Steps to run the Media Service API
 
-Please use the "Review" button in Github to ask us.
+### Pre-requisite 
+- Java 8, Maven are installed.
+- IDE used : Intellij with lombok plugin installed
+### For Backend
+- Step 1: Checkout the above mentioned application and navigate to root folder.
+- Step 2: Use `mvn clean install` to build the application.
+- Step 3: Use `mvn spring-boot:run` to start the application using default profile.
 
+### Non Functional Requirements
+- Rest API Documentation is available at : 
+`http://localhost:8080/rhdhv/swagger-ui.html` 
 
-## Assessment
+- HealthCheck is available at :  
+`http://localhost:8080/rhdhv/healthcheck.html`
 
-We "grade" based on the following criteria:
+### Sample Request and Response
+* To Create Cars, please find below example request : POST `localhost:8080/rhdhv/cars`
+```json
+{
+   "brand": "Honda",
+   "fuelConsumption": 10,
+   "maintenanceCost": 100,
+   "model": "CR-V",
+   "price": 11000,
+   "version": 1,
+   "yearOfRelease": 2019
+ }
+``` 
+ 
+* To Search for Cars, please find below a sample search request : POST `localhost:8080/rhdhv/cars/search`
+ 
+```json
+{
+  "search": {
+    "brand": {  
+      "type": "string",
+      "value": "Honda",
+      "comparison": "eq"
+    },
+    "yearOfRelease": {
+      "type": "number",
+      "value": 2020,
+      "comparison": "eq"
+    }
+  },
+  "sort": {
+    "field": "fuelConsumption",
+    "sortType": "desc"
+  }
+}
+```
 
-* Did you implement according to the requirements?
-* Readability is important to us.
-* We look at your git commit log. It would be good if it shows us your process.
-* Understanding your tactical decisions should be made clear.
-
-## Coding Part
-
-### As a car dealer, I want to browse the cars I have in stock and give purchase recommendations tailored to the needs of my customers.
-
-More specifically,
-
-### As a car dealer, I want to search for cars by year and make.
-
-Example:
-
-- Given the year 2018, I should get the Citroen C3 and Honda Fit.
-- Given the brand Citroën, I should get the Citroen C3 2018.
-- Leaving the search string blank should return a list of all cars.
-
-### As a car dealer, I want to be able to add new cars to my store.
-
-Example:
-
-* I will enter the car's model, make, version, year of release, price, fuel consumption, and annual maintenance cost. The car will show up in the results returned by story #1.
-
-### As a car dealer, I want to recommend to my clients the car with the lowest total annual cost over a period of four (4) years, given the price of fuel (€/L) and the expected distance to travel each month (km/month).
-
-Relevant car parameters are price of the car (€), fuel consumption (km/l), and annual maintenance cost.
-
-Example:
-
-- Given that I expect to travel 250 km each month for the next 4 years, and the expected
-price of fuel is 0.66 €/L, what is the ranking of cars according to their total annual cost?
-
-### Questions
----
-
-Based on these stories, please do as follows:
-
-* Describe the architecture you will use and include a motivation of your choices. (max 500 characters)
-
-* You have a team of 3 developers. How would you tackle working together on the stories?
-
-* Can you describe 1 thing that can go wrong with your code once in production?
+* To suggest a recommendation, please find below a sample search request : POST `localhost:8080/rhdhv/cars/deal`
+```json
+{
+  "searchRequest": {
+    "search": {
+      "yearOfRelease": {
+        "type": "number",
+        "value": 2019,
+        "comparison": "eq"
+      }
+    },
+    "sort": null
+  },
+  "deal": {
+    "dealType": "lowAnnualMaintenance",
+    "fuelRate": 10,
+    "travelDistance": 250
+  }
+}
+```
+### Authors
+* **Naushad Mohammed** 
