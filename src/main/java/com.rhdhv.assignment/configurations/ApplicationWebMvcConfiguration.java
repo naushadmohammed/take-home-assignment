@@ -38,7 +38,8 @@ public class ApplicationWebMvcConfiguration {
   private ApiInfo apiInfo() {
     return new ApiInfoBuilder().title("RoyalHaskoningDHV Car Dealer Application")
         .description(
-            "This API allows the user to create Cars, search for a car and recommendation based on input.")
+            "Car Dealer API allows the dealer/user to add new cars, and search the inventory based on several parameters and different criterias.\n"
+                + "The API also allows user to get a particular recommendation based on a pre-defined deal, which is configured in the application.")
         .version("1.0.0").build();
   }
 

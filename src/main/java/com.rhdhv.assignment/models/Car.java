@@ -14,8 +14,9 @@ import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
- * This Model is a document and request for Car Dealer Api. This will persist in mongodb and also would play a role
- * as view for the consumer.
+ * This Model is a document and request for Car Dealer Api. This will persist in mongodb and also
+ * would play a role as view for the consumer. Ideally, we should create different model and
+ * entities for a resource, but for simplicity I have created only one.
  */
 @Document
 @Data

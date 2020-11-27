@@ -38,7 +38,6 @@ public class CarDealerController implements ICarDealerController {
    */
   @Override
   @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-  @ResponseStatus(HttpStatus.CREATED)
   public ResponseEntity<Car> createCar(Car car) {
     return new ResponseEntity<>(carDealerService.save(car),
         HttpStatus.CREATED);
@@ -51,7 +50,6 @@ public class CarDealerController implements ICarDealerController {
    */
   @Override
   @PostMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-  @ResponseStatus(HttpStatus.OK)
   public ResponseEntity<List<Car>> getCars(SearchRequest search) {
     return new ResponseEntity<>(carDealerService.get(search), HttpStatus.OK);
   }
@@ -63,7 +61,6 @@ public class CarDealerController implements ICarDealerController {
    */
   @Override
   @PostMapping(value = "/deal", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-  @ResponseStatus(HttpStatus.OK)
   @JsonView(value = {GroupView.DealView.class})
   public ResponseEntity<List<Car>> getCarsForDeal(DealRequest dealRequest) {
     return new ResponseEntity<>(carDealerService.getCarsForDeal(dealRequest), HttpStatus.OK);
