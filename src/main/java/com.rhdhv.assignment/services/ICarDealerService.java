@@ -2,10 +2,8 @@ package com.rhdhv.assignment.services;
 
 import com.rhdhv.assignment.models.Car;
 import com.rhdhv.assignment.models.DealRequest;
-import com.rhdhv.assignment.models.Search;
 import com.rhdhv.assignment.models.SearchRequest;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Service layer contract for Car Dealer Service

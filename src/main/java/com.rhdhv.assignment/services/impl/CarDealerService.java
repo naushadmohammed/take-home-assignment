@@ -10,7 +10,6 @@ import com.rhdhv.assignment.services.ICarDealerService;
 import com.rhdhv.assignment.utils.AggregationOperationBuilder;
 import com.rhdhv.assignment.utils.QueryBuilder;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
 import org.springframework.data.mongodb.core.query.Query;
@@ -38,8 +37,8 @@ public class CarDealerService implements ICarDealerService {
    */
   @Override
   public List<Car> get(SearchRequest search) {
-    Query query = new QueryBuilder().withSearch(Optional.ofNullable(search.getSearch()))
-        .order(Optional.ofNullable(search.getSort())).getQuery();
+    Query query = new QueryBuilder().withSearch(search.getSearch())
+        .order(search.getSort()).getQuery();
     return carRepository.find(query);
   }
 

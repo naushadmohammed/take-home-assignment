@@ -40,7 +40,6 @@ public class CarDealerController implements ICarDealerController {
   @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.CREATED)
   public ResponseEntity<Car> createCar(Car car) {
-    System.out.println(car.toString());
     return new ResponseEntity<>(carDealerService.save(car),
         HttpStatus.CREATED);
   }

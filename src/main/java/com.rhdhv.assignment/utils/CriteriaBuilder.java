@@ -6,8 +6,8 @@ import com.rhdhv.assignment.models.StringSearch;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.util.CollectionUtils;
 
 /**
  * Builder class to assist in building Criteria which will be used by mongo to create criterias used
@@ -21,9 +21,9 @@ public class CriteriaBuilder {
     criterias = new ArrayList<>();
   }
 
-  public List<Criteria> createCritera(Optional<Map<String, Search>> search) {
-    if (search.isPresent()) {
-      search.get().forEach((k, v) -> addCriteria(k, v, criterias));
+  public List<Criteria> createCritera(Map<String, Search> search) {
+    if (!CollectionUtils.isEmpty(search)) {
+      search.forEach((k, v) -> addCriteria(k, v, criterias));
     }
     return criterias;
   }

@@ -10,10 +10,10 @@ import com.rhdhv.assignment.models.Deal;
 import com.rhdhv.assignment.models.DealRequest;
 import com.rhdhv.assignment.models.LowAnnualMaintenance;
 import com.rhdhv.assignment.models.SearchRequest;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
@@ -27,8 +27,8 @@ import org.springframework.data.mongodb.core.aggregation.ArithmeticOperators.Mul
  */
 public class AggregationOperationBuilder {
 
+  private static final String FORMULA_ALIAS = "calc";
   final List<AggregationOperation> aggregationOperationList;
-  final private String FORMULA_ALIAS = "calc";
 
   public AggregationOperationBuilder() {
     aggregationOperationList = new ArrayList<>();
@@ -42,7 +42,7 @@ public class AggregationOperationBuilder {
    * @return
    */
   public AggregationOperationBuilder withDealRequest(DealRequest dealRequest) {
-    createMatchOperations(Optional.ofNullable(dealRequest.getSearchRequest()));
+    createMatchOperations(dealRequest.getSearchRequest());
     createProjectionOperations(dealRequest.getDeal());
     createSortOperation();
     return this;
@@ -64,7 +64,7 @@ public class AggregationOperationBuilder {
 
   private void createrLowAnnualMaintenanceProjection(LowAnnualMaintenance deal) {
     this.aggregationOperationList.add(project(
-        Arrays.stream(Car.class.getDeclaredFields()).map(field -> field.getName())
+        Arrays.stream(Car.class.getDeclaredFields()).map(Field::getName)
             .toArray(String[]::new))
         .and(Add.valueOf("maintenanceCost")
             .add(Divide.valueOf(
@@ -74,9 +74,9 @@ public class AggregationOperationBuilder {
         .as(FORMULA_ALIAS));
   }
 
-  private void createMatchOperations(Optional<SearchRequest> searchRequest) {
-    if (searchRequest.isPresent()) {
-      new CriteriaBuilder().createCritera(Optional.ofNullable(searchRequest.get().getSearch()))
+  private void createMatchOperations(SearchRequest searchRequest) {
+    if (null != searchRequest) {
+      new CriteriaBuilder().createCritera(searchRequest.getSearch())
           .forEach(criteria -> this.aggregationOperationList.add(match(criteria)));
     }
 
